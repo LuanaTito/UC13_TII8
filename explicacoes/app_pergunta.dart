@@ -1,0 +1,192 @@
+
+main() => runApp(PerguntaApp());
+//esplicações de estrutura de widget
+//arvore de widget (componentes), arvore de componentes baseado em composição ...
+class PerguntasApp estends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp( //temos o material design, passa um atributo, que passa um widget, que vai passar outro widget
+      home: Scaffold( //estrutura da aplicação
+        appBar: AppBar( //
+          title: Text('Perguntas'), //parametro nomeado que recebe um widget (Text)
+        ),
+        body: Text('Olá Mundo!'), // se apertar o ctrl + espaço ele mostra o que quer receber, e também no vscode mostra as possibilidades de parametros. 
+      ),
+    );
+  }
+}
+
+//tem alguns componetes que recebem mais de um widget
+//diferentes tipos de widgets 
+
+class PerguntasApp estends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp( //temos o material design, passa um atributo, que passa um widget, que vai passar outro widget
+      home: Scaffold( //estrutura da aplicação
+        appBar: AppBar( //
+          title: Text('Perguntas'), //parametro nomeado que recebe um widget (Text)
+        ),
+        body: Column(
+          children: <Widget>[ //essa estrutura faz automatica clicando em ctrl . ( ele apresenta outras opções)
+            Text('Olá Flutter'),
+           ], 
+          //fazendo manualmente
+           body: Column(
+          children: [ 
+            Text('Linha 1'),
+            Text('Linha 2'),
+            Text('Linha 3'),
+           ], 
+        ), 
+      ),
+    );
+  }
+}
+
+// colocando variáveis e button     
+class PerguntasApp estends StatelessWidget {
+
+
+  @override
+  Widget build(BuildContext context) {
+      final List<String> perguntas =[]//pode ser escrita desta forma
+  final perguntas = [ //no dart é possivel criar uma lista de variáveis.
+    'Qual é a sua cor favorita?',
+    'Qual é o seu animal favorito?',
+    'Qual é a sua comida favorita?',
+  ];
+    
+    return MaterialApp( //temos o material design, passa um atributo, que passa um widget, que vai passar outro widget
+      home: Scaffold( //estrutura da aplicação
+        appBar: AppBar( //
+          title: Text('Perguntas'), //parametro nomeado que recebe um widget (Text)
+        ),
+        body: Column(
+          children: <Widget>[ //essa estrutura faz automatica clicando em ctrl . ( ele apresenta outras opções)
+            Text(perguntas.elementAt(0)), //pega o primeiro elemento
+            //outra forma
+             Text(perguntas[0]),//pega o primeiro elemento
+            RaisedButton( //componente que recebe 2 parametros
+              child: Text('Resposta 1'), //crio um botao que recebe outro widget um filho, que pode ser uma coluna, uma linha, um texto, um icone...
+              onPressed: null, // parametro relacionada ao click as ações
+            ),
+            RaisedButton( //componente que recebe 2 parametros
+              child: Text('Resposta 2'), //crio um botao que recebe outro widget um filho, que pode ser uma coluna, uma linha, um texto, um icone...
+              onPressed: null, // parametro relacionada ao click as ações
+            ),
+            RaisedButton( //componente que recebe 2 parametros
+              child: Text('Resposta 3'), //crio um botao que recebe outro widget um filho, que pode ser uma coluna, uma linha, um texto, um icone...
+              onPressed: null, // parametro relacionada ao click as ações
+            ),
+           ], 
+        ), 
+      ),
+    );
+  }
+}      
+
+
+//conectando função ao evento do botão
+      //criação de metodos 
+class PerguntasApp estends StatelessWidget {
+  // o metodo deve ser criado dentro da classe para ficar orientado a objeto
+  void responder(){
+    print('Pergunta respondida!'); //visualizacao no console
+  }
+//passar esse método onde está o null
+  @override
+  Widget build(BuildContext context) {
+  final perguntas = [ 
+    'Qual é a sua cor favorita?',
+    'Qual é o seu animal favorito?',
+    'Qual é a sua comida favorita?',
+  ];
+    return MaterialApp( 
+      home: Scaffold( 
+        appBar: AppBar( 
+          title: Text('Perguntas'), 
+        ),
+        body: Column(
+          children: <Widget>[ 
+            Text(perguntas.elementAt(0)), 
+            
+             Text(perguntas[0]),
+            RaisedButton( 
+              child: Text('Resposta 1'), 
+              onPressed: responder(), //assim ele vai gerar um problema. (mostrar no crtl espaço)
+              //está dando erro pq eu chamei a funcao responder, eu nao passei como parametro. BASTA TIRAR OS (), ASSIM PASSAREMOS A FUNCAO COMO PARAMETRO
+            ),
+            RaisedButton( 
+              child: Text('Resposta 2'), 
+              onPressed: responder(), 
+            ),
+            RaisedButton( 
+              child: Text('Resposta 3'), 
+              onPressed: responder(), 
+            ),
+           ], 
+        ), 
+      ),
+    );
+
+    //executando sem o parenteses no console 
+//view debug console
+class PerguntasApp estends StatelessWidget {
+
+  void responder(){
+    print('Pergunta respondida!'); 
+  }
+  // Invocando uma funcao mesmo, sem ser como parametro:
+//funcao invocando uma funcao
+    void Function() funcaoqueretornaoutrafuncao(){
+      return (){
+    print('Pergunta respondida! #02'); 
+      };
+  }
+
+  @override
+  Widget build(BuildContext context) {
+  final perguntas = [ 
+    'Qual é a sua cor favorita?',
+    'Qual é o seu animal favorito?',
+    'Qual é a sua comida favorita?',
+  ];
+    return MaterialApp( 
+      home: Scaffold( 
+        appBar: AppBar( 
+          title: Text('Perguntas'), 
+        ),
+        body: Column(
+          children: <Widget>[ 
+            Text(perguntas.elementAt(0)), 
+            
+             Text(perguntas[0]),
+            RaisedButton( 
+              child: Text('Resposta 1'), 
+              onPressed: responder, 
+               //pode ser criado uma funcao direto no onpress
+              onPressed: (){
+                print('resopsta 1 foi selecionada');
+              },
+            ),
+            RaisedButton( 
+              child: Text('Resposta 2'), 
+              onPressed: responder, 
+               //pode ser assim tbm
+              onPressed: () => print('resopsta 3'),
+            ),
+            RaisedButton( 
+              child: Text('Resposta 3'), 
+              onPressed: funcaoqueretornaoutrafuncao(), 
+            ),
+           ], 
+        ), 
+      ),
+    );
+  }
+}      
+//parei em funcao anonima hhdhdhdh
+      
