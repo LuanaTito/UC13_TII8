@@ -188,5 +188,5 @@ class PerguntasApp estends StatelessWidget {
     );
   }
 }      
-//parei em funcao anonima hhdhdhdh
+//parei em funcao anonima 
       
