@@ -1,4 +1,6 @@
 
+import 'dart:ffi';
+
 main() => runApp(PerguntaApp());
 //esplicações de estrutura de widget
 //arvore de widget (componentes), arvore de componentes baseado em composição ...
@@ -208,13 +210,13 @@ import 'package:flutter/material.dart';
 void main() => runApp(const PerguntaApp());
 
 class PerguntaAppState extends State<PerguntaApp> {
-  var perguntaSelecionada = 0;
+  var _perguntaSelecionada = 0;
 
   void responder() {
     setState(() { // irá dizer aquilo que está sendo medificado. 
-      perguntaSelecionada++; //incrementando a pergunta onde cada vez que clicar mudar a pergunta.
+      _perguntaSelecionada++; //incrementando a pergunta onde cada vez que clicar mudar a pergunta.
     });
-    print(perguntaSelecionada);
+    print(_perguntaSelecionada);
   }
 
   @override
@@ -231,7 +233,7 @@ class PerguntaAppState extends State<PerguntaApp> {
         ),
         body: Column(
           children: [
-            Text(perguntas[perguntaSelecionada]),
+            Text(perguntas[_perguntaSelecionada]),
             ElevatedButton(
               onPressed: responder,
               child: const Text('Resposta 1'),
@@ -260,4 +262,113 @@ class PerguntaApp extends StatefulWidget {
     return PerguntaAppState();
   }
 }
+
+//tornando membros privados
+/* quando queremos transformar um atributo em privado, no dart não tem palavra reservada
+é usado um "_ " 
+conceito,o objeto só será visto pelo arquivo que está sendo executado.
+
+teste para verificação: 
+crieum arquivo chamado pessoa
+class Pessoa{
+  String nome;
+  String _cpf;
+}
+
+main(){
+var p1 = Pessoa();
+p1.nome = 'João';
+p1._cpf = '123.456.789-00';
+
+print('O ${p1.nome} tem CPF ${p1.cpf}');
+}
+
+crie outro arquivo para testar , coloque em outro arquivo a class Pessoa e importa no arquivo que está o main
+
+import './pessoa.dart';
+
+o cpf não virá pois será privado.
+
+para torna isso possivel deve-se criar um getter. 
+...no arquivo pessoa, dentro da class criar o seguinte:
+
+set cpf(String cpf){
+this._cpf = cpf;
+}
+
+get cpf{
+return _cpf;
+}
+
+lá no outro arquivo colocar o get:
+print('O ${p1.nome} tem CPF ${p1.cpf}');
+
+
+*/
+
+// voltando ao arquivo...
+
+import 'package:flutter/material.dart';
+
+void main() => runApp(const PerguntaApp());
+
+class _PerguntaAppState extends State<PerguntaApp> {
+  var _perguntaSelecionada = 0;
+
+  void __responder() {
+    setState(() { 
+      _perguntaSelecionada++; 
+    });
+    print(_perguntaSelecionada);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final perguntas = [
+      'Qual é a sua cor favorita?',
+      'Qual é o seu animal favorito?',
+    ];
+
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Perguntas'),
+        ),
+        body: Column(
+          children: [
+            Text(perguntas[_perguntaSelecionada]),
+            ElevatedButton(
+              onPressed: _responder,
+              child: const Text('Resposta 1'),
+            ),
+            ElevatedButton(
+              onPressed: _responder,
+              child: const Text('Resposta 2'),
+            ),
+            ElevatedButton(
+              onPressed: _responder,
+              child: const Text('Resposta 3'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+class PerguntaApp extends StatefulWidget {
+  const PerguntaApp({super.key});
+
+  @override
+  _PerguntaAppState createState() {
+    return _PerguntaAppState();
+  }
+}
+
+
+//criar outro componete: questao.dart 
+// digitar st e espaço
+//escolher stateless
+//dar o nome e digitar ctrl . para importar o material design
 
