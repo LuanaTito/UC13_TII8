@@ -263,6 +263,9 @@ class PerguntaApp extends StatefulWidget {
   }
 }
 
+//########-----------=======#########
+
+
 //tornando membros privados
 /* quando queremos transformar um atributo em privado, no dart não tem palavra reservada
 é usado um "_ " 
