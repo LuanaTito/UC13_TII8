@@ -193,6 +193,15 @@ class PerguntasApp estends StatelessWidget {
 ///
 ///transformando em stateful
       
+//Primeiro passo, preciso jogar o que está em stateless, para ful.
+//Com isso ele vai renderizar novamente 
+//Trocar a class PerguntaApp para Stateful (trocando a herança)
+//depois criar uma outra class a cima do pergunta: 
+/*class PerguntaAppState extends state<PerguntaApp>{ //colocar a conexao entre osdois estados
+ colocar aqui dentro a variavel, o metodo set e o build
+} */
+//alt seta para cima, vai subindo.
+
 
 import 'package:flutter/material.dart';
 
@@ -202,8 +211,8 @@ class PerguntaAppState extends State<PerguntaApp> {
   var perguntaSelecionada = 0;
 
   void responder() {
-    setState(() {
-      perguntaSelecionada++;
+    setState(() { // irá dizer aquilo que está sendo medificado. 
+      perguntaSelecionada++; //incrementando a pergunta onde cada vez que clicar mudar a pergunta.
     });
     print(perguntaSelecionada);
   }
@@ -242,6 +251,7 @@ class PerguntaAppState extends State<PerguntaApp> {
   }
 }
 
+//criando um estado abstrado dentro da class
 class PerguntaApp extends StatefulWidget {
   const PerguntaApp({super.key});
 
