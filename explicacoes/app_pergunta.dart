@@ -471,3 +471,7 @@ class Questao extends StatelessWidget {
     );
   }
 }
+
+    //Exercicio montar o componente resposta. 
+
+    
