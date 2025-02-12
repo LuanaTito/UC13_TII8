@@ -406,7 +406,7 @@ class _PerguntaAppState extends State<PerguntaApp> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  
     final perguntas = [
       'Qual é a sua cor favorita?',
       'Qual é o seu animal favorito?',
@@ -447,3 +447,30 @@ class PerguntaApp extends StatefulWidget {
     return _PerguntaAppState();
   }
 }
+///######### -------- ############
+    //aplicando estilo a questao
+
+    
+    import 'package:flutter/material.dart';
+
+class Questao extends StatelessWidget {
+  final String texto;
+
+  const Questao(this.texto, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.all(10),
+      child: Text(
+        texto,
+        style: const TextStyle(fontSize: 28),
+        textAlign: TextAlign.center,
+      ),
+    );
+  }
+}
+
+//Exercio,componente resposta 
+
