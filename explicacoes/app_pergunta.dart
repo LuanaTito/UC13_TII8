@@ -548,6 +548,3 @@ class PerguntaApp extends StatefulWidget {
 }
 //parei no calback
 
-
-    
->>>>>>> e7791d1fc8530be79b25bca3254199bbef5b3b09
