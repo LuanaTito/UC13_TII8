@@ -546,5 +546,212 @@ class PerguntaApp extends StatefulWidget {
     return _PerguntaAppState();
   }
 }
-//parei no calback
+///#############-------##########-------
+  //Função callback
+/*Uma função callback é uma função passada a outra função como argumento, 
+  que é então invocado dentro da função externa para completar 
+  algum tipo de rotina ou ação.*/
+  
+  //customizando o resposta 
 
+   //criando o arquivo resposta
+import 'package:flutter/material.dart';
+
+class Resposta extends StatelessWidget {
+  final String texto;
+  final void Function() quandoSelecionado; //funcao do botao
+
+  const Resposta(this.texto, this.quandoSelecionado, {super.key}); //jundando as funções
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity, //definindo a Largura do container
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.blue,
+          foregroundColor: Colors.white,
+        ),
+        onPressed: quandoSelecionado, //um função quando clicar
+        child: Text(texto),
+      ),
+    );
+  }
+}
+
+  //no main
+  import 'package:flutter/material.dart';
+import './questao.dart';
+import './resposta.dart';
+
+void main() => runApp(const PerguntaApp());
+
+class _PerguntaAppState extends State<PerguntaApp> {
+  var _perguntaSelecionada = 0;
+
+  void _responder() {
+    setState(() { //seta o estado avançando mais um
+      _perguntaSelecionada++;
+    }); //tira o print
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final perguntas = [
+      'Qual é a sua cor favorita?',
+      'Qual é o seu animal favorito?',
+    ];
+
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Perguntas'),
+        ),
+        body: Column(
+          children: [
+            Questao(perguntas[_perguntaSelecionada]),
+            Resposta('Resposta 1', _responder), //passando o parametro da resposta. 
+            Resposta('Resposta 2', _responder),
+            Resposta('Resposta 3', _responder),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+  //////#############-------##########-------
+//lista de maps ...main
+  import 'package:flutter/material.dart';
+import './questao.dart';
+import './resposta.dart';
+
+void main() => runApp(const PerguntaApp());
+
+class _PerguntaAppState extends State<PerguntaApp> {
+  var _perguntaSelecionada = 0;
+
+  void _responder() {
+    setState(() {
+      _perguntaSelecionada++;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final perguntas = [ //lista de estring
+      {
+        'texto': 'Qual é a sua cor favorita?',
+        'respostas': ['Preto', 'Vermelho', 'Verde', 'Branco'], //neste caso será uma lista de resposta.
+      },
+      {
+        'texto': 'Qual é o seu animal favorito?',
+        'respostas': ['Coelho', 'Cobra', 'Elefante', 'Leão'],
+      },
+      {
+        'texto': 'Qual é a sua comida favorita?',
+        'respostas': ['Macarrão', 'Feijoada', 'Churrasco', 'Frutos do Mar'],
+      },
+    ];
+
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Perguntas'),
+        ),
+        body: Column(
+          children: [
+            Questao(perguntas[_perguntaSelecionada]['texto'] as String), //para acessar o map o que está no chave
+            Resposta('Resposta 1', _responder),
+            Resposta('Resposta 2', _responder),
+            Resposta('Resposta 3', _responder),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class PerguntaApp extends StatefulWidget {
+  const PerguntaApp({super.key});
+
+  @override
+  _PerguntaAppState createState() {
+    return _PerguntaAppState();
+  }
+}
+
+  //////#############-------##########-------
+  //lista para widgets
+
+  import 'package:flutter/material.dart';
+import './questao.dart';
+import './resposta.dart';
+
+void main() => runApp(const PerguntaApp());
+
+class _PerguntaAppState extends State<PerguntaApp> {
+  var _perguntaSelecionada = 0;
+
+  void _responder() {
+    setState(() {
+      _perguntaSelecionada++;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final perguntas = [
+      {
+        'texto': 'Qual é a sua cor favorita?',
+        'respostas': ['Preto', 'Vermelho', 'Verde', 'Branco'],
+      },
+      {
+        'texto': 'Qual é o seu animal favorito?',
+        'respostas': ['Coelho', 'Cobra', 'Elefante', 'Leão'],
+      },
+      {
+        'texto': 'Qual é o seu instrutor favorito?',
+        'respostas': ['Maria', 'João', 'Leo', 'Pedro'],
+      },
+    ];
+
+    List<Widget> respostas = [];
+
+    for (String textoResp //adcionar um for 
+        in perguntas[_perguntaSelecionada]['respostas'] as List) {
+      respostas.add(Resposta(textoResp, _responder));
+    }
+
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Perguntas'),
+        ),
+        body: Column(
+          children: [
+            Questao(perguntas[_perguntaSelecionada]['texto'] as String),
+            ...respostas, //joga os elementos da lista dentro da resposta. (ele vai dar erro, então ir no pubspec e add as dependencias de versões
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class PerguntaApp extends StatefulWidget {
+  const PerguntaApp({super.key});
+
+  @override
+  _PerguntaAppState createState() {
+    return _PerguntaAppState();
+  }
+}
+
+  ///no pubspec 
+ // primeiras linhas
+  name: projeto_perguntas
+description: A new Flutter project.
+//linha 15
+  environment:
+  sdk: '>=2.18.1 <3.0.0' //parando a aplicação ele atualiza. 
