@@ -603,6 +603,7 @@ class _PerguntaAppState extends State<PerguntaApp> {
     ];
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false, //tirar o traço padrão
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Perguntas'),
@@ -655,6 +656,7 @@ class _PerguntaAppState extends State<PerguntaApp> {
     ];
 
     return MaterialApp(
+       debugShowCheckedModeBanner: false, //tirar o traço padrão
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Perguntas'),
@@ -682,8 +684,8 @@ class PerguntaApp extends StatefulWidget {
 }
 
   //////#############-------##########-------
-  //lista para widgets
-
+  //lista para widgets - map
+//main
   import 'package:flutter/material.dart';
 import './questao.dart';
 import './resposta.dart';
@@ -716,22 +718,21 @@ class _PerguntaAppState extends State<PerguntaApp> {
       },
     ];
 
-    List<Widget> respostas = [];
-
-    for (String textoResp //adcionar um for 
-        in perguntas[_perguntaSelecionada]['respostas'] as List) {
-      respostas.add(Resposta(textoResp, _responder));
-    }
+        List<String> respostas =
+        perguntas[_perguntaSelecionada]['respostas'] as List<String>;
 
     return MaterialApp(
+       debugShowCheckedModeBanner: false, //tirar o traço padrão
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Perguntas'),
         ),
         body: Column(
           children: [
-            Questao(perguntas[_perguntaSelecionada]['texto'] as String),
-            ...respostas, //joga os elementos da lista dentro da resposta. (ele vai dar erro, então ir no pubspec e add as dependencias de versões
+            /* Peguei uma listra de string, que são as minhas respostas, usei um método map para converter a lista de strings em listas de widgets já que estamos dentro de uma arvore de componentes.
+            Uma vez passado para a column, transformei o resultado do map em uma lista, usamos o spred (...) para pegar cada elemento da lista e jogar dentro da lista que são os filhos do elemento da column*/
+             Questao(perguntas[_perguntaSelecionada]['texto'] as String),
+            ...respostas.map((t) => Resposta(t, _responder)).toList(), //joga os elementos da lista dentro da resposta. (ele vai dar erro, então ir no pubspec e add as dependencias de versões
           ],
         ),
       ),
@@ -749,9 +750,84 @@ class PerguntaApp extends StatefulWidget {
 }
 
   ///no pubspec 
- // primeiras linhas
-  name: projeto_perguntas
-description: A new Flutter project.
 //linha 15
   environment:
   sdk: '>=2.18.1 <3.0.0' //parando a aplicação ele atualiza. 
+
+    //////#############-------##########-------
+//arrumar o problema do erro das perguntas selecionadas. 
+//main
+
+    //primeira coisa é extrair a lista do metodo build e colocar fora
+    
+    import 'package:flutter/material.dart';
+import './questao.dart';
+import './resposta.dart';
+
+void main() => runApp(const PerguntaApp());
+//colocar a class fora da build
+class _PerguntaAppState extends State<PerguntaApp> {
+  var _perguntaSelecionada = 0;
+  final _perguntas = const [ //deixar como privada e const pois é imutável
+    {
+      'texto': 'Qual é a sua cor favorita?',
+      'respostas': ['Preto', 'Vermelho', 'Verde', 'Branco'],
+    },
+    {
+      'texto': 'Qual é o seu animal favorito?',
+      'respostas': ['Coelho', 'Cobra', 'Elefante', 'Leão'],
+    },
+    {
+      'texto': 'Qual é o seu instrutor favorito?',
+      'respostas': ['Maria', 'João', 'Leo', 'Pedro'],
+    },
+  ];
+
+  void _responder() {
+    if (temPerguntaSelecionada) { //aproveitando o getter
+      setState(() {
+        _perguntaSelecionada++;
+      });
+    }
+  }
+//criando um guetter para saber se tem pergunta selecionada
+  bool get temPerguntaSelecionada {
+    return _perguntaSelecionada < _perguntas.length; //se a pergunta selecionada for menor que o tamanho da pergunta.(tamanho da lista menos 1)
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    List<String> respostas = temPerguntaSelecionada
+        ? _perguntas[_perguntaSelecionada]['respostas'] as List<String> //deixar o pergunta privado e fazer um ternário.
+        : []; // caso contrário será nulo
+
+    return MaterialApp(
+       debugShowCheckedModeBanner: false, //tirar o traço padrão
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Perguntas'),
+        ),
+        //dentro da estrutura de arvore você pode colocar uma condição.
+        //se tiver pergunta selecionada, mostre o componente, coso contrário mostre nulo.
+        body: temPerguntaSelecionada
+            ? Column(
+                children: [
+                  Questao(_perguntas[_perguntaSelecionada]['texto'] as String), //pergunta privado
+                  ...respostas.map((t) => Resposta(t, _responder)).toList(),
+                ],
+              )
+            : null,
+      ),
+    );
+  }
+}
+
+class PerguntaApp extends StatefulWidget {
+  const PerguntaApp({super.key});
+
+  @override
+  _PerguntaAppState createState() {
+    return _PerguntaAppState();
+  }
+}
+    
