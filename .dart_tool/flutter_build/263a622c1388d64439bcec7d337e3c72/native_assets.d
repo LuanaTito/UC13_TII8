@@ -1,0 +1,1 @@
+ C:\\Users\\luana.dmelo2\\Documents\\TII8APP\\perguntas\\appperguntas\\.dart_tool\\flutter_build\\263a622c1388d64439bcec7d337e3c72\\native_assets.yaml: 
