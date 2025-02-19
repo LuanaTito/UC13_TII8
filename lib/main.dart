@@ -1,56 +1,104 @@
-
+import 'package:appperguntas/resposta.dart';
 import 'package:flutter/material.dart';
+import './questao.dart';
 
-main() => runApp(PerguntasApp());
+void main() => runApp(PerguntasApp());
 
-class PerguntasApp extends StatelessWidget{
-  //metodo criado para a classe e POO
-  void responder(){
-    print('Pergunta resposndida!');
+class _PerguntaAppState extends State<PerguntasApp> {
+  var _perguntaSelecionada = 0;
+
+  final _perguntas = [
+    {
+      'texto': 'Qual é a sua cor favorita?',
+      'resposta': ['Preto', 'Vermelho', 'Verde', 'Branco'],
+    },
+    {
+      'texto': 'Qual é o seu animal favorito?',
+      'resposta': ['Coelho', 'Cobra', 'Elefante', 'Leão'],
+    },
+    {
+      'texto': 'Qual é a sua comida favorita?',
+      'resposta': ['Macarrão', 'Feijoada', 'Churrasco', 'Frutos do Mar'],
+    },
+  ];
+
+  void _responder() {
+    if (temPerguntaSelecionada) {
+      setState(() {
+        _perguntaSelecionada++;
+      });
+    }
   }
 
-@override
-  Widget build(BuildContext context) {
-    final List<String> perguntas =[ //variável que contém um lista
-      'Qual é a sua cor favorita?',
-      'Qual é o seu animal favorito?',
-      'qual é a sua comida favorita?',
-    ];
+//criando um guetter para saber se tem pergunta selecionada
+  bool get temPerguntaSelecionada {
+    return _perguntaSelecionada < _perguntas.length;
+  }
 
-      return MaterialApp(//material design
-      home: Scaffold( //estrutura da aplicação
-        appBar: AppBar(//topo
-          title: Text('Perguntas'),
+  @override
+  Widget build(BuildContext context) {
+    List<String> respostas = temPerguntaSelecionada
+        ? _perguntas[_perguntaSelecionada]['respostas'] as List<String>
+        : [];
+
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      //material design
+      home: Scaffold(
+        //estrutura da aplicação
+        appBar: AppBar(
+          //topo
+          title: const Text('Perguntas'),
         ),
         //body: Text('Olá Mundo!') //teste de página
-        body: Column(
-          children: <Widget>[
-            Text(perguntas.elementAt(0)),
-            Text(perguntas[1]),
-          ElevatedButton(//recebe dois parametros
-          child: Text('Resposta1'),//crio um botão que recebe outro widget um filho, que pode ser uma coluna, linha, texto, icone...
-          onPressed: responder, //parametros de click
+        body: temPerguntaSelecionada
+        ? Column(
+          children: [
+            /*Peguei uma lista de string. que são as minhas respostas, usei um método MAP para converter a lista em listas de wigets dentro da arvore de componentes. Uma vez passado para column, transformei o resultado do map em uma lista, usamos os (...) para pegar cada elemento da lista e jogar dentro da lista (que são os filhos do column*/
+            Questao(_perguntas[_perguntaSelecionada]['texto'] as String),
+            ...respostas.map((t) => Resposta(t, _responder)).toList(),
+            // Resposta('Resposta1', _responder),
+            // Resposta('Resposta2', _responder),
+            // Resposta('Resposta3', _responder),
+            /* ElevatedButton(
+              //recebe dois parametros
+              onPressed: _responder, //parametros de click
+              child: Text(
+                  'Resposta1'), //crio um botão que recebe outro widget um filho, que pode ser uma coluna, linha, texto, icone...
             ),
-            ElevatedButton(//recebe dois parametros
-          child: Text('Resposta2'),//crio um botão que recebe outro widget um filho, que pode ser uma coluna, linha, texto, icone...
-          onPressed: responder, //parametros de click
+            ElevatedButton(
+              //recebe dois parametros
+              onPressed: _responder, //parametros de click
+              child: Text(
+                  'Resposta2'), //crio um botão que recebe outro widget um filho, que pode ser uma coluna, linha, texto, icone...
             ),
-            ElevatedButton(//recebe dois parametros
-          child: Text('Resposta3'),//crio um botão que recebe outro widget um filho, que pode ser uma coluna, linha, texto, icone...
-          onPressed: responder, //parametros de click
-            ),
-
-            
+            ElevatedButton(
+              //recebe dois parametros
+              onPressed: _responder, //parametros de click
+              child: Text(
+                  'Resposta3'), //crio um botão que recebe outro widget um filho, que pode ser uma coluna, linha, texto, icone...
+            ),*/
           ],
-         
-        ),
-      ),
+        )
+        : const Center(
+                child: Text(
+                  'Parabéns!',
+                  style: TextStyle(
+                    fontSize: 28,
+                  ),
+                ),
+              ),
 
+      ),
     );
   }
 }
 
-//teste do git
+class PerguntasApp extends StatefulWidget {
+  const PerguntasApp({super.key});
 
-
-
+  @override
+  _PerguntaAppState createState() {
+    return _PerguntaAppState();
+  }
+}
