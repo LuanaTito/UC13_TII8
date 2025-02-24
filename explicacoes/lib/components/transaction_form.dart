@@ -77,11 +77,10 @@ class TransactionForm extends StatelessWidget {
   _submitForm() {
     final title = titleController.text;
     final value = double.tryParse(valueController.text) ?? 0;
-
+//caso esses dados estiverem corretos ele chama o onSubmit, caso contrario ele retorna a função (sai da função no caso) 
     if (title.isEmpty || value <= 0) {
       return;
     }
-
     onSubmit(title, value);
   }
 
@@ -105,7 +104,7 @@ class TransactionForm extends StatelessWidget {
               //inserindo o teclado numérico
                keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
-              onSubmitted: (_) => _submitForm(),
+              onSubmitted: (_) => _submitForm(), // o "_" ignora o parâmetro que foi chamado na função.
               decoration: const InputDecoration(
                 labelText: 'Valor (R\$)',
               ),
@@ -136,4 +135,4 @@ class TransactionForm extends StatelessWidget {
     );
   }
 }
-
+//pode apagar os itens fixos na lista, para poder inserir mais caso quiera. 
