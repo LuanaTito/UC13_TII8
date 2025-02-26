@@ -140,8 +140,12 @@ class MyHomePage extends StatelessWidget {
 
 //###########___________##########
 //Construindo o  modal 
+import 'package:expenses/components/transaction_form.dart';
 import 'package:flutter/material.dart';
-import 'components/transaction_user.dart';
+import 'dart:math';
+import 'components/transaction_form.dart';
+import 'components/transaction_list.dart';
+import 'models/transaction.dart';
 
 main() => runApp(const ExpensesApp());
 
@@ -153,41 +157,83 @@ class ExpensesApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  final _transactions = [
+    Transaction(
+      id: 't1',
+      title: 'Novo Tênis de Corrida',
+      value: 310.76,
+      date: DateTime.now(),
+    ),
+    Transaction(
+      id: 't2',
+      title: 'Conta de Luz',
+      value: 211.30,
+      date: DateTime.now(),
+    ),
+  ];
+
+  _addTransaction(String title, double value) {
+    final newTransaction = Transaction(
+      id: Random().nextDouble().toString(),
+      title: title,
+      value: value,
+      date: DateTime.now(),
+    );
+
+    setState(() {
+      _transactions.add(newTransaction);
+    });
+  }
+
+  _openTransactionFormModal(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (_) {
+        return TransactionForm(_addTransaction);
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Despesas Pessoais'),
-        actions: [ // adicionando um widget para ações em cima (appBar - topo)
+        actions: [
           IconButton(
-            icon: const Icon(Icons.add), //ao mostrar a lista de icones, pode clicar no simbolo de informação, ele mostra o icone selecionado
-            onPressed: () {}, // de começo um função vazia.
+            icon: const Icon(Icons.add),
+            onPressed: () => _openTransactionFormModal(context),
           ),
         ],
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: const [
-            SizedBox(
+          children: [
+            const SizedBox(
               child: Card(
                 color: Colors.blue,
                 child: Text('Gráfico'),
                 elevation: 5,
               ),
             ),
-            TransactionUser(),
+            TransactionList(_transactions),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton( // é possivel colocar também na parte de baixo (roapé do aprocativo) dentro ainda do scaffold.
+      floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () {},
+        onPressed: () => _openTransactionFormModal(context),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat, // localização do botão (centro, começo e final) 
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
